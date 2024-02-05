@@ -64,11 +64,11 @@ export async function fetchCardData() {
          SUM(CASE WHEN status = 'pending' THEN amount ELSE 0 END) AS "pending"
          FROM invoices`;
 
-    const data = await Promise.all([
-      invoiceCountPromise,
-      customerCountPromise,
-      invoiceStatusPromise,
-    ]);
+         const data = await Promise.all([
+          invoiceCountPromise,
+          customerCountPromise,
+          invoiceStatusPromise,
+        ]);
 
     const numberOfInvoices = Number(data[0].rows[0].count ?? '0');
     const numberOfCustomers = Number(data[1].rows[0].count ?? '0');
@@ -229,10 +229,3 @@ export async function getUser(email: string) {
     throw new Error('Failed to fetch user.');
   }
 }
-// Fetch the last 5 invoices, sorted by date
-const data = await sql<LatestInvoiceRaw>`
-  SELECT invoices.amount, customers.name, customers.image_url, customers.email
-  FROM invoices
-  JOIN customers ON invoices.customer_id = customers.id
-  ORDER BY invoices.date DESC
-  LIMIT 5`;
